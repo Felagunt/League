@@ -1,11 +1,10 @@
 package com.example.league.presentation.championList
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.league.core.Resource
-import com.example.league.domain.repository.LeagueRepository
 import com.example.league.domain.use_cases.GetChampionListUseCase
-import com.example.league.presentation.ChampionListAction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onEach
@@ -31,7 +30,7 @@ class ChampionListViewModel(
     fun onAction(action: ChampionListAction) {
         when(action) {
             is ChampionListAction.OnChampionClick -> {
-
+                onSearchTextChange(action.champion.name)
             }
             is ChampionListAction.OnSearchQueryChange ->
                 _state.update {
@@ -61,12 +60,23 @@ class ChampionListViewModel(
                 is Resource.Success -> {
                     _state.update {
                         it.copy(
-                            championList = result.data ?: emptyList(),
+                            championList = result.data!!,
                             isLoading = false
                         )
                     }
                 }
             }
+        }
+    }
+
+    private fun onSearchTextChange(query: String) {
+        _state.update {
+            it.copy(
+                searchQuery = query,
+                championList = it.championList.filter {  champion ->
+                    champion.name.contains(query, ignoreCase = true)
+                }
+            )
         }
     }
 

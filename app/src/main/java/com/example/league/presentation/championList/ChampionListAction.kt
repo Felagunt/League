@@ -1,4 +1,4 @@
-package com.example.league.presentation
+package com.example.league.presentation.championList
 
 import com.example.league.domain.models.Champion
 

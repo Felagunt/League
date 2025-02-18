@@ -1,7 +1,27 @@
 package com.example.league.di
 
+import com.example.league.data.network.KtorClient
+import com.example.league.data.network.KtorRemoteSource
+import com.example.league.data.repository.LeagueRepositoryImpl
+import com.example.league.domain.repository.LeagueRepository
+import com.example.league.domain.use_cases.GetChampionListUseCase
+import com.example.league.presentation.championList.ChampionListViewModel
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.okhttp.OkHttp
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val module = module {
-    single {  }
+    //single { KtorRemoteSource() }
+
+    single<HttpClientEngine> { OkHttp.create() }
+    single { KtorClient.create(get()) }
+    singleOf(::KtorRemoteSource)
+    singleOf(::LeagueRepositoryImpl).bind<LeagueRepository>()
+    singleOf(::GetChampionListUseCase)
+
+
+    viewModelOf(::ChampionListViewModel)
 }
