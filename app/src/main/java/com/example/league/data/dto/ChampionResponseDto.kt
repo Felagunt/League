@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ChampionResponseDto (
     @SerialName("data")
-    //val champion: Map<String, ChampionDto> = emptyMap(),
-    val champion: List<ChampionDto>? = emptyList(),
+    val champion: Map<String, ChampionDto> = emptyMap(),
+    //val champion: List<ChampionDto>? = emptyList(),
     @SerialName("format")
     val format: String? = "",
     @SerialName("type")
@@ -15,3 +15,4 @@ data class ChampionResponseDto (
     @SerialName("version")
     val version: String? = ""
     )
+

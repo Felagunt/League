@@ -19,8 +19,11 @@ val module = module {
     single<HttpClientEngine> { OkHttp.create() }
     single { KtorClient.create(get()) }
     singleOf(::KtorRemoteSource)
+    //factory<KtorRemoteSource> { KtorRemoteSource(get()) }
     singleOf(::LeagueRepositoryImpl).bind<LeagueRepository>()
     singleOf(::GetChampionListUseCase)
+    //factory<LeagueRepository> { LeagueRepositoryImpl(get()) }
+    //factory { GetChampionListUseCase(get()) }
 
 
     viewModelOf(::ChampionListViewModel)
