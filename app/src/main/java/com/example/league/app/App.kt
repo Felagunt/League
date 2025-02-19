@@ -1,13 +1,13 @@
 package com.example.league.app
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.league.presentation.championDetails.ChampionDetailsScreenRoot
+import com.example.league.presentation.championDetails.ChampionDetailsViewModel
 import com.example.league.presentation.championList.ChampionListScreenRoot
 import com.example.league.presentation.championList.ChampionListViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -36,9 +36,17 @@ fun App() {
                     )
                 }
 
-                composable<Route.ChampionDetails> {back ->
-                    val arg = back.arguments?.getString(route)
-                    Text(text = arg.toString())
+                composable<Route.ChampionDetails> {//back ->
+                    //val arg = back.arguments?.getString(route)
+
+                    val viewModel = koinViewModel<ChampionDetailsViewModel>()
+
+                    ChampionDetailsScreenRoot(
+                        viewModel = viewModel,
+                        onBackClick = {
+                            navController.navigateUp()
+                        }
+                    )
                 }
             }
         }

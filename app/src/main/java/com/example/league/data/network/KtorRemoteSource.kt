@@ -1,6 +1,5 @@
 package com.example.league.data.network
 
-import com.example.league.data.dto.ChampionDto
 import com.example.league.data.dto.ChampionResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
