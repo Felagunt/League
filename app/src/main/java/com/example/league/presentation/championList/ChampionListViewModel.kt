@@ -31,7 +31,7 @@ class ChampionListViewModel(
     fun onAction(action: ChampionListAction) {
         when(action) {
             is ChampionListAction.OnChampionClick -> {
-                //onSearchTextChange(action.champion.name)
+                onSearchTextChange(action.champion.name)
             }
             is ChampionListAction.OnSearchQueryChange ->
                 _state.update {
@@ -74,7 +74,7 @@ class ChampionListViewModel(
         _state.update {
             it.copy(
                 searchQuery = query,
-                championList = it.championList.filter {  champion ->
+                searchChampionList = it.championList.filter {  champion ->
                     champion.name.contains(query, ignoreCase = true)
                 }
             )
