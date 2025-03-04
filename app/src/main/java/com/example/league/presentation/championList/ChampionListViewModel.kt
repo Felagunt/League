@@ -7,6 +7,7 @@ import com.example.league.core.Resource
 import com.example.league.domain.use_cases.GetChampionListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -30,7 +31,7 @@ class ChampionListViewModel(
     fun onAction(action: ChampionListAction) {
         when(action) {
             is ChampionListAction.OnChampionClick -> {
-                onSearchTextChange(action.champion.name)
+                //onSearchTextChange(action.champion.name)
             }
             is ChampionListAction.OnSearchQueryChange ->
                 _state.update {
@@ -66,7 +67,7 @@ class ChampionListViewModel(
                     }
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun onSearchTextChange(query: String) {

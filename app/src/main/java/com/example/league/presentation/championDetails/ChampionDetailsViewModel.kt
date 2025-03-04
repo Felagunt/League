@@ -10,6 +10,7 @@ import com.example.league.domain.repository.LeagueRepository
 import com.example.league.domain.use_cases.GetChampionDetailsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -67,6 +68,6 @@ class ChampionDetailsViewModel(
                     }
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 }
