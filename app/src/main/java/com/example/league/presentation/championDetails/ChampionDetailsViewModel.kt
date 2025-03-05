@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.league.app.Route
 import com.example.league.core.Resource
+import com.example.league.core.domain.onError
+import com.example.league.core.domain.onSuccess
 import com.example.league.domain.repository.LeagueRepository
 import com.example.league.domain.use_cases.GetChampionDetailsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChampionDetailsViewModel(
-    private val getChampionDetailsUseCase: GetChampionDetailsUseCase,
+    //private val getChampionDetailsUseCase: GetChampionDetailsUseCase,
+    private val repository: LeagueRepository,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -43,31 +46,59 @@ class ChampionDetailsViewModel(
         }
     }
 
-    private fun getChampionDetails(name: String) {
-        getChampionDetailsUseCase(name).onEach { result ->
-            when(result) {
-                is Resource.Error -> {
-                    _state.update {
-                        it.copy(
-                            errorMsg = result.message ?: "unknown"
-                        )
-                    }
-                }
-                is Resource.Loading ->
-                    _state.update {
-                        it.copy(
-                            isLoading = true
-                        )
-                    }
-                is Resource.Success -> {
-                    _state.update {
-                        it.copy(
-                            championDetails = result.data!!,
-                            isLoading = false
-                        )
-                    }
+    private fun getChampionDetails(name: String) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isLoading = true
+            )
+        }
+        repository
+            .getChampionDetails(name)
+            .onSuccess { details ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMsg = null,
+                        championDetails = details
+                    )
                 }
             }
-        }.launchIn(viewModelScope)
+            .onError { error ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        championDetails = null,
+                        errorMsg = error.toString()
+                    )
+                }
+            }
     }
+
+//    private fun getChampionDetails(name: String) {
+//        getChampionDetailsUseCase(name).onEach { result ->
+//            when(result) {
+//                is Resource.Error -> {
+//                    _state.update {
+//                        it.copy(
+//                            errorMsg = result.message ?: "unknown"
+//                        )
+//                    }
+//                }
+//                is Resource.Loading ->
+//                    _state.update {
+//                        it.copy(
+//                            isLoading = true
+//                        )
+//                    }
+//                is Resource.Success -> {
+//                    _state.update {
+//                        it.copy(
+//                            championDetails = result.data!!,
+//                            isLoading = false
+//                        )
+//                    }
+//                }
+//            }
+//        }.launchIn(viewModelScope)
+//    }
 }

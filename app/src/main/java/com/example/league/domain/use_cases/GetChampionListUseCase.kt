@@ -11,15 +11,15 @@ import kotlinx.io.IOException
 class GetChampionListUseCase(
     private val repository: LeagueRepository
 ) {
-
-    operator fun invoke(): Flow<Resource<List<Champion>>> = flow {
-        try {
-            val championList = repository.getChampionsList()
-            emit(Resource.Success(championList))
-        } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage))
-        } catch (e: IOException) {
-            emit(Resource.Error(e.localizedMessage))
-        }
-    }
+//
+//    operator fun invoke(): Flow<Resource<List<Champion>>> = flow {
+//        try {
+//            val championList = repository.getChampionsList()
+//            emit(Resource.Success(championList))
+//        } catch (e: HttpException) {
+//            emit(Resource.Error(e.localizedMessage))
+//        } catch (e: IOException) {
+//            emit(Resource.Error(e.localizedMessage))
+//        }
+//    }
 }

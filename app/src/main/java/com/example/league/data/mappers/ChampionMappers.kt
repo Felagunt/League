@@ -28,6 +28,9 @@ fun Map<String, ChampionDto>.toChampionList(): List<Champion> =
 //fun ChampionResponseDto.toChampionList(): List<Champion> =
 //    this.champion?.toList()!!.map { it.toChampion() }
 
+fun Map<String, ChampionDto>.toChampionDetails(): ChampionDetails? =
+    this.values.map { it.toChampionDetails() }.firstOrNull()
+
 fun ChampionDto.toChampionDetails(): ChampionDetails {
     return ChampionDetails(
         id = id,

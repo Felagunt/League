@@ -1,5 +1,8 @@
 package com.example.league.data.repository
 
+import com.example.league.core.domain.DataError
+import com.example.league.core.domain.Result
+import com.example.league.core.domain.map
 import com.example.league.data.mappers.toChampion
 import com.example.league.data.mappers.toChampionDetails
 import com.example.league.data.mappers.toChampionList
@@ -13,18 +16,14 @@ class LeagueRepositoryImpl(
 ): LeagueRepository {
 
 
-    override suspend fun getChampionsList(): List<Champion> {
-        return api.getListOfChampions()
-            .champion.values.toList()
-            .map { it.toChampion() }//TODO is it crazy?
-            //.champion?.map { it.toChampion() } ?: emptyList()
-            //.map { it.toChampion() }
+    override suspend fun getChampionsList(): Result<List<Champion>, DataError.Remote> {
+        return api.getListOfChampions().map { it.champion.toChampionList() }
+
+
     }
 
-    override suspend fun getChampionDetails(name: String): ChampionDetails? {
+    override suspend fun getChampionDetails(name: String): Result<ChampionDetails?, DataError> {
         return api.getChampionDetails(name)
-            .champion
-            .map { it.value.toChampionDetails() }
-            .firstOrNull()
+            .map { it.champion.toChampionDetails() }
     }
 }

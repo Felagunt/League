@@ -9,6 +9,7 @@ import com.example.league.domain.use_cases.GetChampionListUseCase
 import com.example.league.presentation.championList.ChampionListViewModel
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -21,9 +22,9 @@ val module = module {
     single { KtorClient.create(get()) }
     singleOf(::KtorRemoteSource)
     //factory<KtorRemoteSource> { KtorRemoteSource(get()) }
-    singleOf(::LeagueRepositoryImpl).bind<LeagueRepository>()
-    singleOf(::GetChampionListUseCase)
-    singleOf(::GetChampionDetailsUseCase)
+    singleOf(::LeagueRepositoryImpl) { bind<LeagueRepository>() }
+    //singleOf(::GetChampionListUseCase)
+    //singleOf(::GetChampionDetailsUseCase)
     //factory<LeagueRepository> { LeagueRepositoryImpl(get()) }
     //factory { GetChampionListUseCase(get()) }
 

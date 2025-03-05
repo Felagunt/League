@@ -1,5 +1,8 @@
 package com.example.league.data.network
 
+import com.example.league.core.data.safeCall
+import com.example.league.core.domain.DataError
+import com.example.league.core.domain.Result
 import com.example.league.data.dto.ChampionResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -12,15 +15,20 @@ class KtorRemoteSource(
 ) {
 
 
-    suspend fun getListOfChampions(): ChampionResponseDto {
-        return httpClient.get(
-            urlString = "$BASE_URL/champion.json"
-        ).body()
+    suspend fun getListOfChampions(): Result<ChampionResponseDto, DataError.Remote> {
+        return safeCall<ChampionResponseDto> {
+            httpClient.get(
+                urlString = "$BASE_URL/champion.json"
+            )
+        }
     }
 
-    suspend fun getChampionDetails(name: String): ChampionResponseDto {
-        return httpClient.get(
-            urlString = "$BASE_URL/champion/$name"
-        ).body()
+    suspend fun getChampionDetails(name: String): Result<ChampionResponseDto, DataError.Remote> {
+        return safeCall<ChampionResponseDto> {
+            httpClient.get(
+                urlString = "$BASE_URL/champion/$name"
+            )
+        }
     }
+
 }

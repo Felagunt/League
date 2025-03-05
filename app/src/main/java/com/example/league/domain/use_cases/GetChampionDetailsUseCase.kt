@@ -12,16 +12,16 @@ class GetChampionDetailsUseCase(
     private val repository: LeagueRepository
 ) {
 
-    operator fun invoke(name: String): Flow<Resource<ChampionDetails>> = flow {
-        try {
-            val championDetails = repository.getChampionDetails(name)
-            championDetails?.let {
-                emit(Resource.Success(championDetails))
-            }
-        } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage))
-        } catch (e: IOException) {
-            emit(Resource.Error(e.localizedMessage))
-        }
-    }
+//    operator fun invoke(name: String): Flow<Resource<ChampionDetails>> = flow {
+//        try {
+//            val championDetails = repository.getChampionDetails(name)
+//            championDetails?.let {
+//                emit(Resource.Success(championDetails))
+//            }
+//        } catch (e: HttpException) {
+//            emit(Resource.Error(e.localizedMessage))
+//        } catch (e: IOException) {
+//            emit(Resource.Error(e.localizedMessage))
+//        }
+//    }
 }
